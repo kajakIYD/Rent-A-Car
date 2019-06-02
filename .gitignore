@@ -1,0 +1,4 @@
+*.VC.db
+
+/Debug
+/RentACar/Debug
