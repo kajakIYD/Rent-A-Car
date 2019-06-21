@@ -22,13 +22,15 @@ int main(void)
 
 	std::cout << "Hello would You like to rent a car?\n";
 	
-	operationsManager.printMenu();
 	std::string c;
 
 	User activeUser = User(); //konstrutor domyslny, bo user jest "pusty"
 
+	bool performExit = false;
+
 	do
 	{
+		operationsManager.printMenu();
 		std::cout << "Choose an option:\n";
 
 		std::cin >> c;
@@ -37,8 +39,11 @@ int main(void)
 		{
 			if (operationsManager.logIn(activeUser) == true) //login(activeUser) -> to jest przekazanie przez referencjê (mechanizm taki  jak przez wskaznik, tylko prostszy ww obs³udze i debugowaniu)
 			{
-				operationsManager.shopping(&activeUser);
-				break;
+				performExit = operationsManager.shopping(&activeUser);
+				if (!performExit)
+				{
+					std::cout << "Sucessfully logged out\n";
+				}
 			}			
 		}
 		else if (c == "2")
@@ -58,7 +63,7 @@ int main(void)
 			std::cout << "There is not such an option... :(";
 		}
 
-	} while (c != "4");
+	} while (c.compare("4") != 0 && performExit == false);
 
 	std::cout << "Hope to see You again!\n";
 

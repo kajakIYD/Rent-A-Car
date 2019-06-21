@@ -149,8 +149,40 @@ bool Operations::logIn(User& activeUser) //User& to znaczy ze przekazujemy przez
 	return false;
 }
 
+int Operations::compareStrings(std::string choice)
+{
+	while (choice != "e" && choice != "E" && choice != "b" && choice != "B" && choice != "l" && choice != "L")
+	{
+		std::cout << "Press b to go back shopping or e to exit or l to log out\n";
+		std::cin >> choice;
+	}
 
-void Operations::shopping(User* activeUser)
+	if (choice.compare("l") == 0 || choice.compare("L") == 0)
+	{
+		return 0; // just log out
+	}
+
+	if (choice.compare("e") == 0 || choice.compare("E") == 0)
+	{
+		return 1; // exit
+	}
+
+	return 2; // go back shopping
+}
+
+
+inline bool isInteger(const std::string & s)
+{
+	if (s.empty() || ((!isdigit(s[0])) && (s[0] != '-') && (s[0] != '+'))) return false;
+
+	char * p;
+	strtol(s.c_str(), &p, 10);
+
+	return (*p == 0);
+}
+
+
+bool Operations::shopping(User* activeUser)
 {
 	//Operations::showAllCars(); //tu nie odwo³ujemy sie do obiektu klasy
 
@@ -161,22 +193,42 @@ void Operations::shopping(User* activeUser)
 	{
 		operation.showAllCars(); //odwolujemy do metody z klaasy operations za pomoca obiekttu klasy operations 
 
-		std::cout << "Choose a car to rent or type E or e to exit..." << std::endl;
+		std::cout << "Chosse a car, OR press b to go back shopping or e to exit or l to log out\n";
 
 		std::cin >> choice;
 
-		if (choice == "exit" || choice == "E" || choice == "e")
+		int result;
+		if (isInteger(choice))
 		{
-			return; //tu pretla sie przerywa
+			result = 3;
+		}
+		else
+		{
+			result = compareStrings(choice);
+		}
+
+
+		if (result == 1) //choice == "exit" || choice == "E" || choice == "e")
+		{
+			return true; //tu pretla sie przerywa
+		}
+		else if (result == 0)
+		{
+			return false;
 		}
 		else
 		{
 			operation.rentACar(choice, *activeUser);	//tu przy activeUser musi byæ *, bo * wy³uskuje wartoœæ któr¹ pokazuje wskaŸnik (jeœli robimy przez wskaŸnik)
 
-			while (choice != "e" && choice != "E" && choice != "b" && choice != "B")
+			result = compareStrings(choice);
+
+			if (result == 1) //choice == "exit" || choice == "E" || choice == "e")
 			{
-				std::cout << "Press b to go back shopping or e to exit\n";
-				std::cin >> choice;
+				return true; //tu pretla sie przerywa
+			}
+			else if (result == 0) //choice logOut
+			{
+				return false;
 			}
 		}
 	}

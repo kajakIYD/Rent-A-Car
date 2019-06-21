@@ -18,7 +18,7 @@ public:
 
 	void signUp();
 	void logOut(User* activeUser);
-	void shopping(User* activeUser);
+	bool shopping(User* activeUser);
 	bool logIn(User& activeUser); //User& to znaczy ze przekazujemy przez referencje 
 	void printMenu();
 
@@ -28,6 +28,7 @@ private:
 
 	std::vector<User> userVector;
 
+	int compareStrings(std::string choice); //prywatna metoda
 
 };
 
